@@ -1,71 +1,63 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Newspaper{
-    vector<vector<int,string>>v;
-    public:
-    Newspaper()
-    {
-        v={
-            {26,"TOI"}, {20.5,"Hindu"}, {34,"ET"}, {10.5,"BM"}, {18,"HT"}
-        };
-    }
 
-    vector<vector<string,int>> subscription(double target)
-    {
-        sort(v.begin(),v.end());
-        double sum=0;
-        int n=v.size();
-        int i=0;
-        int j=0;
-        vector<vector<string,int>>ans;
-        vector<string,int>out;
-        while(j<n){
-            
-            sum+=v[i][0];
-
-            if(sum>target & i<j){
-                out.erase(out.begin());
-                i++;
-            }
-
-            if(sum<=target & i<j){
+class newspaperSubscription{
+public:
+ vector<string> newspaperNames;
+ unordered_map<string, double> prices;
+    newspaperSubscription(){
+        this->newspaperNames = {"TOI", "Hindu", "ET", "BM", "HT"};
+        vector<vector<double>> price = {
+                {3,3,3,3,3,5,6},
+                {2.5,2.5,2.5,2.5,2.5,4,4},
+                {4,4,4,4,4,4,10},
+                {1.5,1.5,1.5,1.5,1.5,1.5,1.5},
+                {2,2,2,2,2,4,4}
+                };
                 
-                for(int k=i;k<=j;k++){
-                    out.push_back({v[k][1],v[k][0]});
-                }
-                if(out.size()>1){
-                    ans.push_back(out);
-                    out.clear();
-
-                }
-                
+            for(int i=0;i<5;i++){
+                double sum = 0;
+                for(auto &x:price[i])
+                    sum += x;
+                this->prices[newspaperNames[i]] = sum;
             }
-            
-            j++;
-        }
-        return ans;
+        return ;
     }
-    
-    
 };
- 
 
-int main()
-{
-    Newspaper n;
-    double price;
-    cout<<"Enter the budget";
-    cin>>price;
-    vector<vector<string,int>> comb=n.subscription(price);
-    cout<<"{";
-    for (int i=0;i<comb.size();i++) {
-        cout<<"{"
-        for(int j=0;j<comb[i].size();j++){
-            cout<<comb[i][j]<<",";
+void helper(int idx, int budget, newspaperSubscription &obj, vector<string> &combination, vector<vector<string>> &combinations){
+ if(idx == 5){
+  if(combination.size() != 1)
+   combinations.push_back(combination);
+  return ;
+ }
+ if(budget >= obj.prices[obj.newspaperNames[idx]]){
+  combination.push_back(obj.newspaperNames[idx]);
+  helper(idx+1, budget - obj.prices[obj.newspaperNames[idx]], obj, combination, combinations);
+  combination.pop_back();
+ }
+
+ helper(idx + 1, budget, obj, combination, combinations);
+ return ;
+
+}
+
+int main(){
+    
+    int budget;
+    cin>>budget;
+    newspaperSubscription obj;
+    vector<string> combination;
+    vector<vector<string>> combinations;
+
+ helper(0, budget, obj, combination, combinations);
+
+    for(auto &combination:combinations){
+        for(auto &newspaper:combination){
+            cout<<newspaper<<" ";
         }
-        cout<<"}";
+        cout<<"\n";
     }
-    cout<<"}";
-    return 0;
+return 0;
 }
