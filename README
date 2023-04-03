@@ -1,0 +1,26 @@
+✅ In this Question i have used the concept of recursion and backtracking.
+
+The idea behind the solution is simple, You are given with a budget lets call that target value and you have to find all the possible combination 
+of newspaper that sums upto or less than target value.
+
+1. Given an series(array) of interger which is weeky newspaper subscription on daily basis. 
+   Lets add each this to get cummulative sum of each day of week of particular newspaper.
+
+2. Now, Create a map as Prices (unordered_map<string, double> prices ) to store key as newspaper corresponding to it value would be cummulative sum.
+   
+3. Apply recursion on map  to find all the combinations which add up to the given Target value.
+    BASE COND: Till the total number of newspaper (size if 5).
+               combination vector check that there should be more than 1 newspaper acc to question.
+               Now,push combination into resultant vector i.e combinations.
+  /*     
+  if(budget >= obj.prices[obj.newspaperNames[idx]]){
+    combination.push_back(obj.newspaperNames[idx]);
+    helper(idx+1, budget - obj.prices[obj.newspaperNames[idx]], obj, combination, combinations);
+    combination.pop_back();
+  }
+  */
+  This if condition will add price of each newspaper untill it is surpassing budget.Till than i pushing that element into combination.
+  helper function will deduct the price of each newspaper from budget and move to next newspaper.
+  Otherwise, if cummulative sum of newspaper exceeds the budget,We simply remove the recently added newspaper.
+
+The sum of combination should be lesser than or equal to Target value(budget) .Thats your required ans.
